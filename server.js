@@ -28,3 +28,27 @@ const toDoSchema = new mongoose.Schema({
     required: true,
   },
 });
+const ToDo = mongoose.model("ToDo", toDoSchema);
+
+//GraphQL Schemas
+const typeDefs = gql`
+  type ToDo {
+    id: ID!
+    title: String!
+    description: String!
+  }
+  input ToDoInput {
+    title: String!
+    description: String!
+  }
+  type Query {
+    getToDo(toDoId: ID!): ToDo!
+    getToDos: [ToDo!]!
+  }
+  type Mutation {
+    createToDo(toDoInput: ToDoInput): ToDo
+    updateToDo(toDoId: ID!, toDoInput: ToDoInput): ToDo
+    deleteToDo(toDoId: ID!): ToDo
+    deleteToDos: [ToDo!]!
+  }
+`;
