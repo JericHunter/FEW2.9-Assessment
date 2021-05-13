@@ -52,3 +52,29 @@ const typeDefs = gql`
     deleteToDos: [ToDo!]!
   }
 `;
+const resolvers = {
+    Query: {
+      getToDo: async (parent, args) => {
+        try {
+          const { toDoId } = args;
+          return await ToDo.findById(toDoId);
+        } catch (error) {
+          throw new Error(error);
+        }
+      },
+      getToDos: async (parent, args) => {
+        try {
+          return await ToDo.find();
+        } catch (error) {
+          throw new Error(error);
+        }
+      },
+    },
+  
+
+  const server = new ApolloServer({ typeDefs, resolvers });
+  
+  // The `listen` method launches a web server.
+  server.listen().then(({ url }) => {
+    console.log(`Server ready at ${url}`);
+  });
